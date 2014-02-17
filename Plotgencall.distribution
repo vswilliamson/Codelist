@@ -1,0 +1,18 @@
+# summarise GC and plot
+library(plyr)
+library(ggplot2)
+#read in file
+gencall = read.table("gencall file", header = F)
+#split file, calculating mean GC by snp
+mm = ddply(gencall, "V1", summarise, gc = mean(V5))
+t = ggplot(mm, aes(x = factor(V1), y = gc)) + geom_bar(stat = "identity")
+t + theme(axis.text.x = element_blank()) + theme(legend.position = "none") + ggtitle("Mean GenCall Scores for Chromosome Y (N = 62) 
+                    \n Bounceback Study 1/16/14") + xlab("SNPs")
+
+##other alternative ways to plot 
+#alternative method is through faceting
+#ggplot(diamonds, aes(clarity)) + geom_bar() +facet_wrap(~ cut)
+# use a line instead of bars if x axis is ordered
+#ggplot(diamonds, aes(clarity)) + geom_freqpoly(aes(group = cut, colour = cut))
+#dodged barcharts
+#ggplot(diamonds, aes(clarity, fill=cut)) + geom_bar(position="dodge")
